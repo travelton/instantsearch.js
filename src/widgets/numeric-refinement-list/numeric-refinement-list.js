@@ -54,8 +54,8 @@ numericRefinementList({
   container,
   attributeName,
   options,
-  [ cssClasses.{root,header,body,footer,list,item,active,label,radio,count} ],
-  [ templates.{header,item,footer} ],
+  [ cssClasses.{list, item, active, label, radio, count, panelRoot, panelHeader, panelBody, panelFooter} ],
+  [ templates.{item, panelHeader, panelFooter} ],
   [ transformData.{item} ],
   [ autoHideContainer ],
   [ collapsible=false ]
@@ -63,22 +63,22 @@ numericRefinementList({
 
 /**
  * @typedef {Object} NumericRefinementListCSSClasses
- * @property {string|string[]} [root] CSS class to add to the root element.
- * @property {string|string[]} [header] CSS class to add to the header element.
- * @property {string|string[]} [body] CSS class to add to the body element.
- * @property {string|string[]} [footer] CSS class to add to the footer element.
  * @property {string|string[]} [list] CSS class to add to the list element.
  * @property {string|string[]} [label] CSS class to add to each link element.
  * @property {string|string[]} [item] CSS class to add to each item element.
  * @property {string|string[]} [radio] CSS class to add to each radio element (when using the default template).
  * @property {string|string[]} [active] CSS class to add to each active element.
+ * @property {string|string[]} [panelRoot] CSS class to add to the root panel element
+ * @property {string|string[]} [panelHeader] CSS class to add to the header panel element
+ * @property {string|string[]} [panelBody] CSS class to add to the body panel element
+ * @property {string|string[]} [panelFooter] CSS class to add to the footer panel element
  */
 
 /**
  * @typedef {Object} NumericRefinementListTemplates
- * @property {string|function} [header] Header template.
  * @property {string|function} [item] Item template, provided with `label` (the name in the configuration), `isRefined`, `url`, `value` (the setting for the filter) data properties.
- * @property {string|function} [footer] Footer template.
+ * @property {string|function():string} [panelHeader=''] Template used for the header of the panel.
+ * @property {string|function():string} [panelFooter=''] Template used for the footer of the panel.
  */
 
 /**
@@ -132,7 +132,7 @@ numericRefinementList({
  *       {start: 2000, name: 'more than 2000'}
  *     ],
  *     templates: {
- *       header: 'Popularity'
+ *       panelHeader: 'Popularity'
  *     }
  *   })
  * );
@@ -154,15 +154,15 @@ export default function numericRefinementList({
   const containerNode = getContainerNode(container);
 
   const cssClasses = {
-    root: cx(bem(null), userCssClasses.root),
-    header: cx(bem('header'), userCssClasses.header),
-    body: cx(bem('body'), userCssClasses.body),
-    footer: cx(bem('footer'), userCssClasses.footer),
     list: cx(bem('list'), userCssClasses.list),
     item: cx(bem('item'), userCssClasses.item),
     label: cx(bem('label'), userCssClasses.label),
     radio: cx(bem('radio'), userCssClasses.radio),
     active: cx(bem('item', 'active'), userCssClasses.active),
+    panelRoot: userCssClasses.panelRoot,
+    panelHeader: userCssClasses.panelHeader,
+    panelBody: userCssClasses.panelBody,
+    panelFooter: userCssClasses.panelFooter,
   };
 
   const specializedRenderer = renderer({
